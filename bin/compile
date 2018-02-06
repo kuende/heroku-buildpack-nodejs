@@ -2,6 +2,11 @@
 # bin/compile <build-dir> <cache-dir> <env-dir>
 
 ### Configure environment
+if [ -z "${NODE_APP_PREFIX}" ]; then
+  app_folder="${1:-}"
+else
+  app_folder="${1:-}/$NODE_APP_PREFIX"
+fi
 
 set -o errexit    # always exit on error
 set -o pipefail   # don't ignore exit codes when piping output
@@ -14,7 +19,7 @@ BPLOG_PREFIX="buildpack.nodejs"
 
 ### Configure directories
 
-BUILD_DIR=${1:-}
+BUILD_DIR=$app_folder
 CACHE_DIR=${2:-}
 ENV_DIR=${3:-}
 BP_DIR=$(cd $(dirname ${0:-}); cd ..; pwd)
